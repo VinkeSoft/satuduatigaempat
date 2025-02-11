@@ -317,6 +317,39 @@
             });
         });
 
+        function keepScreenOn()
+        {
+            // Check if the Wake Lock API is supported
+            if ('wakeLock' in navigator) {
+                let wakeLock = null;
+
+                // Function to request a wake lock
+                const requestWakeLock = async () => {
+                    try {
+                        wakeLock = await navigator.wakeLock.request('screen');
+                        console.log('Screen Wake Lock is active');
+                    } catch (err) {
+                        console.error(`Failed to activate Wake Lock: ${err.message}`);
+                    }
+                };
+
+                // Request a wake lock when the page becomes visible
+                document.addEventListener('visibilitychange', async () => {
+                    if (wakeLock !== null && document.visibilityState === 'visible') {
+                        await requestWakeLock();
+                    }
+                });
+
+                // Request the wake lock initially
+                requestWakeLock();
+            } else {
+                console.warn('Screen Wake Lock API is not supported in this browser.');
+            }            
+
+        }
+
+        keepScreenOn();
+
         // Initialize the game
         generateRandomNumbers();
     </script>
