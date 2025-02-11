@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satu Dua Tiga Empat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .green-box {
+            border: 10px solid green;
+            padding: 20px;
+            display: flex;
+            flex-direction: column; /* Stack rows vertically */
+            gap: 10px; /* Spacing between rows */
+            width: fit-content; /* Adjust width based on content */
+            border-radius: 10px;
+        }
+
+        .greenBoxRow {
+            display: flex;
+            align-items: center; /* Align items in a row */
+            gap: 10px; /* Spacing between items */
+        }
+
+        .box {
+            background-color: black;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            font-size: 18px;
+            border-radius: 10px;
+        }
+
+        .plus-sign {
+            font-size: 30px;
+            padding: 0 5px; /* Small padding to keep it compact */
+            width: 20px;
+        }
+
+        .sumText {
+            background-color: white;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            font-size: 30px;
+            border-radius: 10px;
+        }
+
+        .vertical-operator-sign2 {
+            background-color: white;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px; /* Same as .box */
+            height: 20px; /* Shorter height */
+            font-size: 30px;
+            border-radius: 5px;
+        }
+
+        .crossSpace {
+            font-size: 30px;
+            padding: 0 5px; /* Small padding to keep it compact */
+            width: 20px;
+            height: 20px; /* Same height as vertical-operator-sign2 */
+        }
+
+
+        .winner {
+            transform: scale(1.25);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 400px;
+            margin-top: 30px;
+        }
+        
+        .score-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .score-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+
+        .score-button span:first-child {
+            position: absolute;
+            top: 5px; /* Adjust as needed */
+            font-size: 14px;
+        }
+                
+        #score1 { background-color: rgb(99, 1, 1); }
+        #score2 { background-color: darkblue; }
+        #score3 { background-color: darkgreen; }
+        #score4 { background-color: black; }
+        
+        .score-value {
+            font-size: 30px;
+            font-weight: bold;
+        }
+        
+        .action-buttons {
+            justify-content: space-between;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .action-button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            width: 100px;
+            height: 80px;
+            font-size: 18px;
+        }
+
+        #next { background-color: darkgreen; color: white}
+        #reset { background-color: darkred; color: white}
+
+        .win-text {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Satu Dua Tiga Empat</h1>
+    <div class="game-container">
+        <div class="green-box">
+            <!-- Row 1 -->
+            <div class="greenBoxRow">
+                <div class="box" id="boxA"></div>
+                <div class="plus-sign">+</div>
+                <div class="box" id="boxB"></div>
+                <div class="sumText" id="sumRow1">=</div>
+            </div>
+
+            <!-- New Row with Vertical Operator Signs -->
+            <div class="greenBoxRow">
+                <div class="vertical-operator-sign2">+</div>
+                <div class="crossSpace"></div>
+                <div class="vertical-operator-sign2">+</div>
+            </div>            
+        
+            <!-- Row 2 -->
+            <div class="greenBoxRow">
+                <div class="box" id="boxC"></div>
+                <div class="plus-sign">+</div>
+                <div class="box" id="boxD"></div>
+                <div class="sumText" id="sumRow2">=</div>
+            </div>
+        
+            <!-- Row 3 (Bottom Results) -->
+            <div class="greenBoxRow">
+                <div class="sumText" id="sumCol1">=</div>
+                <div class="plus-sign"></div>
+                <div class="sumText" id="sumCol2">=</div>
+                <div></div>
+            </div>
+        </div>
+        <div class="win-text">Win = <span id="win-score">3</span></div>
+
+        <div class="button-container">
+            <div class="score-buttons">
+              <button class="score-button" id="score1">
+                <span>score 1</span>
+                <span class="score-value">0</span>
+              </button>
+              <button class="score-button" id="score2">
+                <span>score 2</span>
+                <span class="score-value">0</span>
+              </button>
+              <button class="score-button" id="score3">
+                <span>score 3</span>
+                <span class="score-value">0</span>
+              </button>
+              <button class="score-button" id="score4">
+                <span>score 4</span>
+                <span class="score-value">0</span>
+              </button>
+            </div>
+            <div class="action-buttons">
+              <button class="action-button" id="next">Next</button>
+              <button class="action-button" id="reset">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let varA, varB, varC, varD;
+        const winScore = 3;
+
+        function generateUniqueNumbers() {
+            let numbers = [0, 1, 2, 3]; // Represents indices
+            let uniqueNumbers = [];
+
+            while (numbers.length > 0) {
+                let index = Math.floor(Math.random() * numbers.length);
+                uniqueNumbers.push(numbers.splice(index, 1)[0]);
+            }
+
+            return uniqueNumbers;
+        }        
+
+        function generateRandomNumbers() {
+            let A = [1, 2, 3, 4, 5, 6];
+            let B = [7, 8, 9, 1, 2, 3];
+            let C = [4, 5, 6, 7, 8, 9];
+            let D = [1, 2, 3, 4, 5, 6];
+
+            let numbers = [A, B, C, D];
+
+            let nL = generateUniqueNumbers();
+            console.log("nL (Index Order):", nL);
+
+            let varA = numbers[nL[0]][Math.floor(Math.random() * numbers[nL[0]].length)];
+            let varB = numbers[nL[1]][Math.floor(Math.random() * numbers[nL[1]].length)];
+            let varC = numbers[nL[2]][Math.floor(Math.random() * numbers[nL[2]].length)];
+            let varD = numbers[nL[3]][Math.floor(Math.random() * numbers[nL[3]].length)];
+
+            document.getElementById('boxA').textContent = varA;
+            document.getElementById('boxB').textContent = varB;
+            document.getElementById('boxC').textContent = varC;
+            document.getElementById('boxD').textContent = varD;
+
+            document.getElementById('sumRow1').textContent = `= ${varA + varB}`;
+            document.getElementById('sumRow2').textContent = `= ${varC + varD}`;
+            document.getElementById('sumCol1').textContent = `= ${varA + varC}`;
+            document.getElementById('sumCol2').textContent = `= ${varA + varD}`;
+        }
+
+        function resetGame() {
+            document.querySelectorAll('.score-button').forEach(button => {
+                //button.style.transform = 'scale(1)';
+                button.querySelector('.score-value').textContent = '0';
+                button.classList.remove('winner');
+                button.disabled = false;
+            });
+        }
+
+        function checkWinner() {
+            document.querySelectorAll('.score-button').forEach(button => {
+                const score = parseInt(button.querySelector('.score-value').textContent);
+                if (score >= winScore) {
+                    document.querySelectorAll('.score-button').forEach(b => b.disabled = true);
+                    button.classList.add('winner');
+                }
+            });
+        }
+
+        document.getElementById('next').addEventListener('click', generateRandomNumbers);
+
+        document.getElementById('reset').addEventListener('click', resetGame);
+
+        document.querySelectorAll('.score-button').forEach(button => {
+            button.addEventListener('click', () => {
+                let score = parseInt(button.querySelector('.score-value').textContent);
+                score++;
+                button.querySelector('.score-value').textContent = `${score}`;
+                checkWinner();
+            });
+        });
+
+        // Initialize the game
+        generateRandomNumbers();
+    </script>
+</body>
+</html>
