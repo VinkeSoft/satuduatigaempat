@@ -13,14 +13,16 @@
         }
 
         h1 {
-            margin-top: 20px;
+            margin-top: 3px;
+            margin-bottom: 5px;
+            padding: 2px;
         }
 
         .game-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 20px;
+            margin-top: 0px;
             width: 380px;
             margin-left: auto;
             margin-right: auto;
@@ -161,9 +163,29 @@
         #next { background-color: darkgreen; color: white}
         #reset { background-color: darkred; color: white}
 
-        .win-text {
+        .win-container {
+            display: flex;
+            align-items: center; /* Align items vertically in the center */
+            gap: 10px; /* Spacing between Win= text and mode button */
             margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .win-text {
             font-weight: bold;
+            margin: 0; /* Remove default margin */
+        }
+
+        .mode-button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            background-color: rgb(187, 187, 187);
+            color: rgb(0, 0, 0);
+            height: 40px; /* Match the height of the Win= text */
+            min-width: 100px;
         }
 
         /* Apply this style for screens smaller than 600px (mobile devices) */
@@ -186,22 +208,22 @@
             <!-- Row 1 -->
             <div class="greenBoxRow">
                 <div class="box" id="boxA"></div>
-                <div class="plus-sign">+</div>
+                <div class="plus-sign" id="operTop">+</div>
                 <div class="box" id="boxB"></div>
                 <div class="sumText" id="sumRow1">=</div>
             </div>
 
             <!-- New Row with Vertical Operator Signs -->
             <div class="greenBoxRow">
-                <div class="vertical-operator-sign2">+</div>
+                <div class="vertical-operator-sign2" id="operLeft">+</div>
                 <div class="crossSpace"></div>
-                <div class="vertical-operator-sign2">+</div>
+                <div class="vertical-operator-sign2" id="operRight">+</div>
             </div>            
         
             <!-- Row 2 -->
             <div class="greenBoxRow">
                 <div class="box" id="boxC"></div>
-                <div class="plus-sign">+</div>
+                <div class="plus-sign" id="operBottom">+</div>
                 <div class="box" id="boxD"></div>
                 <div class="sumText" id="sumRow2">=</div>
             </div>
@@ -214,7 +236,12 @@
                 <div></div>
             </div>
         </div>
-        <div class="win-text">Win = <span id="win-score">3</span></div>
+
+        <!-- Win and Mode Button Container -->
+        <div class="win-container">
+            <div class="win-text">Win = <span id="win-score">3</span></div>
+            <button class="mode-button" id="gameMode">Tambah</button>
+        </div>
 
         <div class="button-container">
             <div class="score-buttons">
@@ -245,8 +272,16 @@
     <script>
         let varA, varB, varC, varD;
         const winScore = 3;
+        // Define game modes with internal values and button text
+        const gameModes = [
+            { value: "tambah", text: "Tambah" },
+            { value: "kalitambah", text: "Kali Tambah" }
+        ];
+        let gameMode = gameModes[0].value; // Initialize with the first mode
 
-        function generateUniqueNumbers() {
+
+        function generateUniqueNumbers() 
+        {
             let numbers = [0, 1, 2, 3]; // Represents indices
             let uniqueNumbers = [];
 
@@ -258,7 +293,8 @@
             return uniqueNumbers;
         }        
 
-        function generateRandomNumbers() {
+        function generateRandomNumbers() 
+        {
             let A = [1, 2, 3, 4, 5, 6];
             let B = [7, 8, 9, 1, 2, 3];
             let C = [4, 5, 6, 7, 8, 9];
@@ -279,10 +315,34 @@
             document.getElementById('boxC').textContent = varC;
             document.getElementById('boxD').textContent = varD;
 
-            document.getElementById('sumRow1').textContent = `= ${varA + varB}`;
-            document.getElementById('sumRow2').textContent = `= ${varC + varD}`;
-            document.getElementById('sumCol1').textContent = `= ${varA + varC}`;
-            document.getElementById('sumCol2').textContent = `= ${varB + varD}`;
+            if (gameMode === "tambah") 
+            {
+                // Set all operators to "+"
+                document.getElementById('operTop').textContent = "+";
+                document.getElementById('operBottom').textContent = "+";
+                document.getElementById('operLeft').textContent = "+";
+                document.getElementById('operRight').textContent = "+";
+
+                // Calculate sums for rows and columns
+                document.getElementById('sumRow1').textContent = `= ${varA + varB}`;
+                document.getElementById('sumRow2').textContent = `= ${varC + varD}`;
+                document.getElementById('sumCol1').textContent = `= ${varA + varC}`;
+                document.getElementById('sumCol2').textContent = `= ${varB + varD}`;
+            } 
+            else if (gameMode === "kalitambah") 
+            {
+                // Set row operators to "+" and column operators to "x"
+                document.getElementById('operTop').textContent = "+";
+                document.getElementById('operBottom').textContent = "+";
+                document.getElementById('operLeft').textContent = "×"; // Use "×" for multiplication
+                document.getElementById('operRight').textContent = "×";
+
+                // Calculate sums for rows and products for columns
+                document.getElementById('sumRow1').textContent = `= ${varA + varB}`;
+                document.getElementById('sumRow2').textContent = `= ${varC + varD}`;
+                document.getElementById('sumCol1').textContent = `= ${varA * varC}`;
+                document.getElementById('sumCol2').textContent = `= ${varB * varD}`;
+            }
         }
 
         function resetGame() {
@@ -352,6 +412,16 @@
 
         // Initialize the game
         generateRandomNumbers();
+
+        // Handle game mode change
+        document.getElementById('gameMode').addEventListener('click', () => {
+            const currentIndex = gameModes.findIndex(mode => mode.value === gameMode);
+            const nextIndex = (currentIndex + 1) % gameModes.length;
+            gameMode = gameModes[nextIndex].value; // Update the internal game mode
+            document.getElementById('gameMode').textContent = gameModes[nextIndex].text; // Update the button text
+            generateRandomNumbers();
+        });
+
     </script>
 </body>
 </html>
