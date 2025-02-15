@@ -280,6 +280,20 @@
         let gameMode = gameModes[0].value; // Initialize with the first mode
 
 
+        function getReady() {
+            // Set all operators to "?"
+            document.getElementById('operTop').textContent = "?";
+            document.getElementById('operBottom').textContent = "?";
+            document.getElementById('operLeft').textContent = "?";
+            document.getElementById('operRight').textContent = "?";
+
+            // Set all sum texts to "?"
+            document.getElementById('sumRow1').textContent = "?";
+            document.getElementById('sumRow2').textContent = "?";
+            document.getElementById('sumCol1').textContent = "?";
+            document.getElementById('sumCol2').textContent = "?";
+        }
+
         function generateUniqueNumbers() 
         {
             let numbers = [0, 1, 2, 3]; // Represents indices
@@ -364,8 +378,11 @@
             });
         }
 
-        document.getElementById('next').addEventListener('click', generateRandomNumbers);
-
+        document.getElementById('next').addEventListener('click', () => {
+            getReady(); // Call getReady() first
+            setTimeout(generateRandomNumbers, 2000); // Call generateRandomNumbers() after 2 seconds
+        });
+        
         document.getElementById('reset').addEventListener('click', resetGame);
 
         document.querySelectorAll('.score-button').forEach(button => {
