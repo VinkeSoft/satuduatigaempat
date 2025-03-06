@@ -216,7 +216,7 @@
             <!-- New Row with Vertical Operator Signs -->
             <div class="greenBoxRow">
                 <div class="vertical-operator-sign2" id="operLeft">+</div>
-                <div class="crossSpace"></div>
+                <div class="crossSpace" id="operMiddle"></div>
                 <div class="vertical-operator-sign2" id="operRight">+</div>
             </div>            
         
@@ -233,6 +233,7 @@
                 <div class="sumText" id="sumCol1">=</div>
                 <div class="plus-sign"></div>
                 <div class="sumText" id="sumCol2">=</div>
+                <div class="sumText" id="sumDiag">=</div>
                 <div></div>
             </div>
         </div>
@@ -275,7 +276,8 @@
         // Define game modes with internal values and button text
         const gameModes = [
             { value: "tambah", text: "Tambah" },
-            { value: "kalitambah", text: "Kali Tambah" }
+            { value: "kalitambah", text: "Kali Tambah" },
+            { value: "tambah5", text: "Tambah 5 Angka" }
         ];
         let gameMode = gameModes[0].value; // Initialize with the first mode
 
@@ -286,12 +288,14 @@
             document.getElementById('operBottom').textContent = "?";
             document.getElementById('operLeft').textContent = "?";
             document.getElementById('operRight').textContent = "?";
+            document.getElementById('operMiddle').textContent = "?";
 
             // Set all sum texts to "?"
             document.getElementById('sumRow1').textContent = "?";
             document.getElementById('sumRow2').textContent = "?";
             document.getElementById('sumCol1').textContent = "?";
             document.getElementById('sumCol2').textContent = "?";
+            document.getElementById('sumDiag').textContent = "?";
         }
 
         function generateUniqueNumbers() 
@@ -336,12 +340,14 @@
                 document.getElementById('operBottom').textContent = "+";
                 document.getElementById('operLeft').textContent = "+";
                 document.getElementById('operRight').textContent = "+";
+                document.getElementById('operMiddle').textContent = "";
 
                 // Calculate sums for rows and columns
                 document.getElementById('sumRow1').textContent = `= ${varA + varB}`;
                 document.getElementById('sumRow2').textContent = `= ${varC + varD}`;
                 document.getElementById('sumCol1').textContent = `= ${varA + varC}`;
                 document.getElementById('sumCol2').textContent = `= ${varB + varD}`;
+                document.getElementById('sumDiag').textContent = ``;
             } 
             else if (gameMode === "kalitambah") 
             {
@@ -350,12 +356,30 @@
                 document.getElementById('operBottom').textContent = "+";
                 document.getElementById('operLeft').textContent = "×"; // Use "×" for multiplication
                 document.getElementById('operRight').textContent = "×";
+                document.getElementById('operMiddle').textContent = "";
 
                 // Calculate sums for rows and products for columns
                 document.getElementById('sumRow1').textContent = `= ${varA + varB}`;
                 document.getElementById('sumRow2').textContent = `= ${varC + varD}`;
                 document.getElementById('sumCol1').textContent = `= ${varA * varC}`;
                 document.getElementById('sumCol2').textContent = `= ${varB * varD}`;
+                document.getElementById('sumDiag').textContent = ``;
+            }
+            else if (gameMode === "tambah5") 
+            {
+                // Set row operators to "+" and column operators to "x"
+                document.getElementById('operTop').textContent = "+";
+                document.getElementById('operBottom').textContent = "+";
+                document.getElementById('operLeft').textContent = "+"; // Use "×" for multiplication
+                document.getElementById('operRight').textContent = "+";
+                document.getElementById('operMiddle').textContent = "+";
+
+                // Calculate sums for rows and products for columns
+                document.getElementById('sumRow1').textContent = `= ${varA + varB}`;
+                document.getElementById('sumRow2').textContent = `= ${varC + varD}`;
+                document.getElementById('sumCol1').textContent = `= ${varA + varC}`;
+                document.getElementById('sumCol2').textContent = `= ${varB + varD}`;
+                document.getElementById('sumDiag').textContent = `= ${varA + varD}`;
             }
         }
 
