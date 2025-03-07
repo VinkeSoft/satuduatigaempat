@@ -240,7 +240,7 @@
 
         <!-- Win and Mode Button Container -->
         <div class="win-container">
-            <div class="win-text">Win = <span id="win-score">3</span></div>
+            <button class="win-text mode-button" id="winScoreButton">Win = <span id="win-score">3</span></button>
             <button class="mode-button" id="gameMode">Tambah</button>
         </div>
 
@@ -272,7 +272,7 @@
 
     <script>
         let varA, varB, varC, varD;
-        const winScore = 3;
+        let winScore = 3;
         // Define game modes with internal values and button text
         const gameModes = [
             { value: "tambah", text: "Tambah" },
@@ -281,7 +281,7 @@
         ];
         let gameMode = gameModes[0].value; // Initialize with the first mode
 
-
+        
         function getReady() {
             // Set all operators to "?"
             document.getElementById('operTop').textContent = "?";
@@ -417,6 +417,25 @@
                 checkWinner();
             });
         });
+
+
+        // Function to update the winScore button text
+        function updateWinScoreButton() {
+            document.getElementById('win-score').textContent = winScore;
+        }
+
+        // Function to handle winScore button click
+        function handleWinScoreClick() {
+            winScore++; // Increment winScore by 1
+            if (winScore > 10) {
+                winScore = 3; // Reset to 3 if winScore exceeds 10
+            }
+            updateWinScoreButton(); // Update the button text
+        }
+
+        // Add event listener to the winScore button
+        document.getElementById('winScoreButton').addEventListener('click', handleWinScoreClick);
+
 
         function keepScreenOn()
         {
